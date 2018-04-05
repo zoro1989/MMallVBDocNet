@@ -357,6 +357,7 @@
     </Content>
     <Content Include="Content\result.css" />
     <Content Include="Content\user-pass-reset.css" />
+    <Content Include="DB\cjbpeixun.sql" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
