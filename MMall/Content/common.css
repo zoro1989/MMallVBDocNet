@@ -1,0 +1,167 @@
+body {
+	background: #f6f6f6;
+	font: 12px/1.5 tahoma, arial, Microsoft YaHei, sans-serif;
+}
+.w {
+	width: 1024px;
+	overflow: hidden;
+	margin: 0 auto;
+	position: relative;
+}
+.link {
+	color: #999;
+	cursor: pointer;
+	text-decoration: none;
+}
+.link:hover {
+	color: #e80012;
+}
+.link-text{
+	color: #999;
+	text-decoration: none;
+}
+.btn {
+	display: inline-block;
+	padding: 0 20px;
+	height: 40px;
+	line-height: 40px;
+	vertical-align: middle;
+	border: none;
+	background: #c60023;
+	font-size: 17px;
+	font-weight: bold;
+	color: #FFF;
+	outline: none;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.blk {
+	display: inline-block;
+}
+
+/**
+顶部导航
+ */
+.nav {
+	background: #eee;
+	height: 30px;
+	line-height: 30px;
+}
+.user {
+	float: left;
+}
+.nav-list {
+	float: right;
+}
+.nav-list .nav-item {
+	display: inline-block;
+	margin-left: 5px;
+}
+.nav-list .nav-item .fa{
+	margin-right: 3px;
+}
+/**
+头部搜索
+ */
+.header {
+	height: 110px;
+	line-height: 110px;
+}
+.header .logo {
+	position: absolute;
+	left: 50px;
+	top: 0px;
+	display: block;
+	font-size: 36px;
+	color: #c60023;
+	font-weight: bold;
+	text-decoration: none;
+}
+.header .search {
+	margin: 0 auto;
+	width: 650px;
+	height: 110px;
+	line-height: 110px;
+	vertical-align: middle;
+}
+.header .search .search-input {
+	width: 550px;
+	height: 40px;
+    line-height: 40px;
+	padding-left: 10px;
+	font-size: 15px;
+	border: 2px solid #c60023;
+	outline: none;
+}
+.header .search .search-btn {
+	position: absolute;
+	top: 50%;
+	margin-top: -22px;
+	height: 44px;
+	width: 80px;
+}
+
+/*面包屑导航*/
+.crumb{
+	margin-bottom: 15px;
+	height: 50px;
+	line-height: 50px;
+	background: #eee;
+	color:#888;
+	font-size: 14px;
+	border-top: 2px solid #c60023;
+}
+
+
+/* panel */
+.panel{
+	padding: 10px;
+	margin-bottom: 10px;
+	background: #fff;
+}
+.panel .panel-title{
+	padding: 10px;
+	font-size: 14px;
+	color: #666;
+	font-weight: bold;
+	border-bottom: 1px solid #eee;
+}
+.panel .panel-body{
+	padding: 10px;
+	overflow: hidden;
+}
+
+
+/**
+底部
+ */
+.footer {
+	padding-bottom: 10px;
+}
+.footer .links {
+	text-align: center;
+	color: #666;
+	line-height: 30px;
+}
+.footer .links .link {
+	padding: 0 10px;
+}
+.footer .copyright {
+	text-align: center;
+	color: #666;
+	line-height: 30px;
+}
+
+.nav-simple{
+	height: 60px;
+	line-height: 60px;
+	border-bottom: 1px solid #ddd;
+	background: #fff;
+}
+.nav-simple .logo{
+	font-size:26px;
+	font-weight: bold;
+	color: #c60023;
+	text-decoration: none;
+}

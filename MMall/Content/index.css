@@ -1,0 +1,166 @@
+/**
+关键词
+ */
+.keywords-list {
+	float: left;
+	width: 240px;
+	height: 350px;
+	padding: 10px 0;
+	margin-right: 10px;
+	background: #666;
+	color: #FFF;
+}
+.keywords-list .keywords-item {
+	padding-left: 10px;
+	height: 35px;
+	line-height: 35px;
+	font-size: 14px;
+}
+.keywords-list .keywords-item:hover {
+	background: #999;
+}
+.keywords-list .keywords-item .link {
+	margin-right: 6px;
+	color: #fff;
+}
+.keywords-list .keywords-item .link:hover {
+	color: #c60023;
+}
+/**
+轮播图
+ */
+.banner {
+	float: left;
+	width: 770px;
+	height: 370px;
+	position: relative;
+    overflow: hidden;
+}
+.banner .image-wrapper {
+    height: 370px;
+    position: absolute;
+    left: -770px;
+    white-space: nowrap;
+}
+.banner .image{
+	width: 770px;
+	height: 370px;
+    float: left;
+}
+/**
+轮播得箭头
+ */
+.banner .banner-arrow {
+	position: absolute;
+	top: 160px;
+	width: 30px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	font-size: 30px;
+	color: #fff;
+	background: #ccc;
+	background: rgba(0,0,0, 0.2);
+	cursor: pointer;
+}
+.banner .banner-arrow.prev {
+	left: 0;
+}
+.banner .banner-arrow.next {
+	right: 0;
+}
+/**
+轮播图的点
+ */
+.banner .dots {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom : 20px;
+	text-align: center;
+}
+.banner .dots li {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	margin: 0 4px;
+	border: 2px solid #fff;
+	border-radius: 6px;
+	cursor: pointer;
+	opacity: 0.4;
+}
+.banner .dots li.active {
+	background: #fff;
+	opacity: 1;
+}
+/**
+楼层
+ */
+.floor-wrapper .floor-title{
+	height: 50px;
+	line-height: 50px;
+	color: #d58717;
+	font-weight: normal;
+	font-size: 20px;
+	border-bottom: 1px solid #d58717;
+}
+.floor-wrapper:nth-child(2) .floor-title {
+	color: #3b838c;
+	border-bottom: 1px solid #3b838c;
+}
+.floor-wrapper:nth-child(3) .floor-title {
+	color: #624663;
+	border-bottom: 1px solid #624663;
+}
+.floor-wrapper:nth-child(4) .floor-title {
+	color: #488bad;
+	border-bottom: 1px solid #488bad;
+}
+.floor-wrapper:nth-child(5) .floor-title {
+	color: #a93931;
+	border-bottom: 1px solid #a93931;
+}
+
+.floor-wrapper .floor-list {
+	overflow: hidden;
+	margin-right: -76px;
+}
+.floor-wrapper .floor-list .floor-item {
+	float: left;
+	position: relative;
+	width: 190px;
+	height: 210px;
+	margin: 15px 20px 15px 0;
+	cursor: pointer;
+	background: #fff;
+}
+.floor-wrapper .floor-list .floor-item .floor-image {
+	position: absolute;
+	right: 15px;
+	bottom: 10px;
+	width: 80%;
+	height: 75%;
+	border: none;
+}
+.floor-wrapper .floor-list .floor-item .floor-text {
+	font-size: 16px;
+	color: #555;
+	position: absolute;
+	top: 12px;
+	left: 20px;
+}
+.floor-wrapper .floor-list .floor-item:hover {
+	box-shadow: 1px 1px 7px #ddd;
+}
+
+
+
+
+
+
+
+
+
+
+
+
