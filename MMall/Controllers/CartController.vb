@@ -6,7 +6,10 @@ Namespace Controllers
     Public Class CartController
         Inherits Controller
         Private _cartService As ICartService = New CartServiceImpl
-        ' GET: Cart
+        ''' <summary>
+        ''' 购物车列表
+        ''' </summary>
+        ''' <returns></returns>
         Function Index() As ActionResult
             Dim user As User = DirectCast(Session(ConstVal.CURRENT_USER), User)
             If user Is Nothing Then
