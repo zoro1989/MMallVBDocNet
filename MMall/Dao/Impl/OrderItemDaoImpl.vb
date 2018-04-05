@@ -2,7 +2,11 @@
 Imports System.Data.SqlClient
 Public Class OrderItemDaoImpl : Implements IOrderItemDao
     Private Const _baseColumnStr As String = "id,user_id,order_no,product_id,product_name,product_image,current_unit_price,quantity,total_price,create_time,update_time"
-
+    ''' <summary>
+    ''' 创建子订单
+    ''' </summary>
+    ''' <param name="orderItem"></param>
+    ''' <returns></returns>
     Public Function CreateOrderItem(orderItem As OrderItem) As Boolean Implements IOrderItemDao.CreateOrderItem
         Dim helper As SQLHelper = New SQLHelper
         Dim sqlStr As String = "insert into cjbmall_order_item values( @user_id, @order_no,@product_id, 
@@ -22,7 +26,11 @@ Public Class OrderItemDaoImpl : Implements IOrderItemDao
         Dim result As Boolean = helper.ExecAddDelUpdate(sqlStr, CommandType.Text, sqlParams)
         Return result
     End Function
-
+    ''' <summary>
+    ''' 根据订单号获取子订单列表
+    ''' </summary>
+    ''' <param name="orderNo"></param>
+    ''' <returns></returns>
     Public Function SelectOrderItemListByOrderNo(orderNo As Long) As List(Of OrderItem) Implements IOrderItemDao.SelectOrderItemListByOrderNo
         Dim helper As SQLHelper = New SQLHelper
         Dim sqlStr As String = "select " & _baseColumnStr & " from cjbmall_order_item where order_no=@orderNo"

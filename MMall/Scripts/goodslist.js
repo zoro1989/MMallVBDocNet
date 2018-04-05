@@ -1,4 +1,5 @@
-﻿function orderByPrice(orderBy) {
+﻿// 按价格排序
+function orderByPrice(orderBy) {
     var inputValue = document.getElementById("search-input").value
     var categoryValue = document.getElementById("categoryIdValue").value
     
@@ -13,6 +14,7 @@
     }
     
 }
+// 默认排序
 function orderByDefault() {
     var inputValue = document.getElementById("search-input").value
     var categoryValue = document.getElementById("categoryIdValue").value
@@ -20,7 +22,7 @@ function orderByDefault() {
 }
 
 
-
+// 跳转分页
 function goToPage(pageNo, orderBy) {
     if (pageNo === '' || pageNo === undefined) {
         pageNo = 1
@@ -30,6 +32,7 @@ function goToPage(pageNo, orderBy) {
     window.location.href = "/Goods/List?keyword=" + inputValue + "&categoryId=" + categoryValue + "&orderBy=" + orderBy + "&pageNo=" + pageNo
 }
 
+// 上一页
 function goToPrevPage(pageNo, orderBy) {
     if (pageNo === '' || pageNo === undefined) {
         pageNo = 1
@@ -41,7 +44,7 @@ function goToPrevPage(pageNo, orderBy) {
     window.location.href = "/Goods/List?keyword=" + inputValue + "&categoryId=" + categoryValue + "&orderBy=" + orderBy + "&pageNo=" + pageNo
 
 }
-
+// 下一页
 function goToNextPage(pageNo, orderBy) {
     if (pageNo === '' || pageNo === undefined) {
         pageNo = 1

@@ -23,9 +23,11 @@ Namespace Controllers
 
             Dim res As ServerResponse(Of UserLoginDto) = _userService.Login(viewModel)
             If res.IsSuccess Then
+                ' 在session中保存用户对象
                 Session(ConstVal.CURRENT_USER) = res.Data.User
+                ' 在session中保存购物车数量
                 Session(ConstVal.CURRENT_CART_COUNT) = res.Data.CartCount
-
+                ' 获取session中的历史url信息,若有历史记录则跳转历史记录中的url
                 Dim history As HistoryUrlDto = DirectCast(Session(ConstVal.HISTORY_URL), HistoryUrlDto)
                 If history Is Nothing Then
                     Return RedirectToAction("Index", "Home")
@@ -105,13 +107,23 @@ Namespace Controllers
             viewModel.Result = res
             Return View(viewModel)
         End Function
-
+        ''' <summary>
+        ''' 忘记密码-答案
+        ''' </summary>
+        ''' <param name="username"></param>
+        ''' <param name="question"></param>
+        ''' <returns></returns>
         Function ForgetPasswordAnswer(username As String, question As String) As ActionResult
             Dim viewModel As ForgetPasswrodViewModel = New ForgetPasswrodViewModel
             viewModel.Username = username
             viewModel.Question = question
             Return View(viewModel)
         End Function
+        ''' <summary>
+        ''' 忘记密码-答案提交
+        ''' </summary>
+        ''' <param name="viewModel"></param>
+        ''' <returns></returns>
         <HttpPost>
         Function ForgetPasswordAnswer(viewModel As ForgetPasswrodViewModel) As ActionResult
             Dim res As ServerResponse(Of String) = _userService.CheckAnswer(viewModel)
@@ -123,13 +135,24 @@ Namespace Controllers
             viewModel.Result = res
             Return View(viewModel)
         End Function
-
+        ''' <summary>
+        ''' 忘记密码-新密码
+        ''' </summary>
+        ''' <param name="username"></param>
+        ''' <param name="forgetToken"></param>
+        ''' <returns></returns>
         Function ForgetPasswrodNewPassword(username As String, forgetToken As String) As ActionResult
             Dim viewModel As ForgetPasswrodViewModel = New ForgetPasswrodViewModel
             viewModel.Username = username
+            ' 讲密码token返回给前端
             viewModel.ForgetToken = forgetToken
             Return View(viewModel)
         End Function
+        ''' <summary>
+        ''' 忘记喵喵-新密码提交
+        ''' </summary>
+        ''' <param name="viewModel"></param>
+        ''' <returns></returns>
         <HttpPost>
         Function ForgetPasswrodNewPassword(viewModel As ForgetPasswrodViewModel) As ActionResult
             Dim res As ServerResponse(Of String) = _userService.ForgetResetPassword(viewModel)

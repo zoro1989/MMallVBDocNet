@@ -4,7 +4,12 @@ Public Class OrderServiceImpl : Implements IOrderService
     Private _orderDao As IOrderDao = New OrderDaoImpl
     Private _orderItemDao As IOrderItemDao = New OrderItemDaoImpl
     Private _shippingDao As IShippingDao = New ShippingDaoImpl
-
+    ''' <summary>
+    ''' 获取订单详情
+    ''' </summary>
+    ''' <param name="orderNumber"></param>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
     Public Function GetOrderDetail(orderNumber As String, userId As String) As ServerResponse(Of OrderInfoDto) Implements IOrderService.GetOrderDetail
         Dim orderList As List(Of Order) = _orderDao.SelectOrderDetailById(orderNumber, userId)
         If orderList.Count = 0 Then
@@ -12,10 +17,17 @@ Public Class OrderServiceImpl : Implements IOrderService
         End If
         Dim order As Order = orderList(0)
         Dim dto As OrderInfoDto = Me.AssembleOrderList(order, userId)
+        ' 获取订单子表信息
         dto.OrderItemList = _orderItemDao.SelectOrderItemListByOrderNo(order.OrderNo)
         Return ServerResponse(Of OrderInfoDto).createBySuccess(dto)
     End Function
-
+    ''' <summary>
+    ''' 获取订单列表
+    ''' </summary>
+    ''' <param name="user"></param>
+    ''' <param name="pageNo"></param>
+    ''' <param name="pageSize"></param>
+    ''' <returns></returns>
     Public Function GetOrderList(user As User, pageNo As Integer, pageSize As Integer) As ServerResponse(Of OrderListInfoDto) Implements IOrderService.GetOrderList
 
         Dim orderList As List(Of Order) = _orderDao.SelectOrderListByUserId(user.Id, pageNo, pageSize)
@@ -38,6 +50,12 @@ Public Class OrderServiceImpl : Implements IOrderService
 
         Return ServerResponse(Of OrderListInfoDto).createBySuccess(res)
     End Function
+    ''' <summary>
+    ''' 组装订单列表
+    ''' </summary>
+    ''' <param name="order"></param>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
     Private Function AssembleOrderList(order As Order, userId As String) As OrderInfoDto
         Dim orderInfo As OrderInfoDto = New OrderInfoDto
         orderInfo.Id = order.Id

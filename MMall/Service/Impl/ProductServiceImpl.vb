@@ -4,7 +4,11 @@ Public Class ProductServiceImpl : Implements IProductService
 
     Private _productDao As IProductDao = New ProductDaoImpl
     Private _cartDao As ICartDao = New CartDaoImpl
-
+    ''' <summary>
+    ''' 添加商品到购物车
+    ''' </summary>
+    ''' <param name="viewModel"></param>
+    ''' <returns></returns>
     Public Function AddProductToCart(viewModel As GoodsAddCartSuccessViewModel) As ServerResponse(Of Integer) Implements IProductService.AddProductToCart
         If String.IsNullOrEmpty(viewModel.ProductId) Then
             Return ServerResponse(Of Integer).CreateByErrorMessage("参数错误")
@@ -16,7 +20,11 @@ Public Class ProductServiceImpl : Implements IProductService
         Dim count As Integer = _cartDao.SelectCartCount(viewModel.UserId)(0).Count
         Return ServerResponse(Of Integer).createBySuccess(count)
     End Function
-
+    ''' <summary>
+    ''' 根据关键字获取商品信息
+    ''' </summary>
+    ''' <param name="viewModel"></param>
+    ''' <returns></returns>
     Public Function GetProductByKeyword(viewModel As GoodsListViewModel) As ServerResponse(Of ProductInfoDto) Implements IProductService.GetProductByKeyword
 
         viewModel.Keyword = "%" & viewModel.Keyword & "%"
@@ -34,7 +42,11 @@ Public Class ProductServiceImpl : Implements IProductService
         dto.ProductList = productList
         Return ServerResponse(Of ProductInfoDto).createBySuccess(dto)
     End Function
-
+    ''' <summary>
+    ''' 获取商品详情
+    ''' </summary>
+    ''' <param name="productId"></param>
+    ''' <returns></returns>
     Public Function GetProductDetailById(productId As String) As ServerResponse(Of ProductDtailInfoDto) Implements IProductService.GetProductDetailById
         Dim list As List(Of Product) = _productDao.SelectDetailByProductId(productId)
         If list.Count = 0 Then
@@ -44,6 +56,11 @@ Public Class ProductServiceImpl : Implements IProductService
 
         Return ServerResponse(Of ProductDtailInfoDto).createBySuccess(Me.Assemble(productDetail))
     End Function
+    ''' <summary>
+    ''' 组装商品详情数据
+    ''' </summary>
+    ''' <param name="product"></param>
+    ''' <returns></returns>
     Private Function Assemble(product As Product) As ProductDtailInfoDto
         Dim dto As ProductDtailInfoDto = New ProductDtailInfoDto
         dto.Id = product.Id

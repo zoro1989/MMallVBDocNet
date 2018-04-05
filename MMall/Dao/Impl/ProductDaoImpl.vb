@@ -20,16 +20,23 @@ Public Class ProductDaoImpl : Implements IProductDao
     '　　select *, ROW_NUMBER() OVER(Order by Id ) As RowNumber from tablename  
     ') as b  
     'where RowNumber BETWEEN 当前页数-1*条数 And 页数*条数
+    ''' <summary>
+    ''' 获取商品列表
+    ''' </summary>
+    ''' <param name="viewModel"></param>
+    ''' <returns></returns>
     Public Function SelectByProductName(viewModel As GoodsListViewModel) As List(Of Product) Implements IProductDao.SelectByProductName
         Dim helper As SQLHelper = New SQLHelper
         Dim resList As List(Of Product) = New List(Of Product)
 
         Dim orderStr As String = String.Empty
+        ' 拼接排序搜索条件
         If Not String.IsNullOrEmpty(viewModel.OrderBy) Then
             orderStr = "order by price " & viewModel.OrderBy
         Else
             orderStr = "order by id"
         End If
+        ' 拼接品类id搜索条件
         Dim categoryIdStr As String = String.Empty
         If Not String.IsNullOrEmpty(viewModel.CategoryId) Then
             categoryIdStr = " and category_id=" & viewModel.CategoryId
@@ -48,7 +55,11 @@ Public Class ProductDaoImpl : Implements IProductDao
 
         Return ConvertHelper.convertToList(Of Product)(dt)
     End Function
-
+    ''' <summary>
+    ''' 获取商品数量
+    ''' </summary>
+    ''' <param name="viewModel"></param>
+    ''' <returns></returns>
     Public Function SelectCountByProductName(viewModel As GoodsListViewModel) As List(Of Page) Implements IProductDao.SelectCountByProductName
         Dim helper As SQLHelper = New SQLHelper
         Dim resList As List(Of Product) = New List(Of Product)
@@ -63,7 +74,11 @@ Public Class ProductDaoImpl : Implements IProductDao
 
         Return ConvertHelper.convertToList(Of Page)(dt)
     End Function
-
+    ''' <summary>
+    ''' 获取商品详情
+    ''' </summary>
+    ''' <param name="productId"></param>
+    ''' <returns></returns>
     Public Function SelectDetailByProductId(productId As String) As List(Of Product) Implements IProductDao.SelectDetailByProductId
         Dim helper As SQLHelper = New SQLHelper
         Dim sqlStr As String = "select " & _baseColumnStr & " from cjbmall_product where id=@productId"

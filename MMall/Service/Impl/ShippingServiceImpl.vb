@@ -2,6 +2,11 @@
 
 Public Class ShippingServiceImpl : Implements IShippingService
     Private _shippingDao As IShippingDao = New ShippingDaoImpl
+    ''' <summary>
+    ''' 添加地址
+    ''' </summary>
+    ''' <param name="viewModel"></param>
+    ''' <returns></returns>
     Public Function AddShipping(viewModel As CartAddViewModel) As ServerResponse(Of Shipping) Implements IShippingService.AddShipping
         Dim shipping As Shipping = New Shipping
         shipping.UserId = viewModel.UserId
@@ -31,7 +36,12 @@ Public Class ShippingServiceImpl : Implements IShippingService
         End If
 
     End Function
-
+    ''' <summary>
+    ''' 删除地址
+    ''' </summary>
+    ''' <param name="shippingId"></param>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
     Public Function DeleteShipping(shippingId As String, userId As String) As ServerResponse(Of String) Implements IShippingService.DeleteShipping
         Dim result As Boolean = _shippingDao.DeleteShippingById(shippingId, userId)
         If Not result Then
@@ -39,7 +49,12 @@ Public Class ShippingServiceImpl : Implements IShippingService
         End If
         Return ServerResponse(Of String).createBySuccess("删除地址成功")
     End Function
-
+    ''' <summary>
+    ''' 获取地址信息
+    ''' </summary>
+    ''' <param name="shippingId"></param>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
     Public Function GetShippingInfoById(shippingId As String, userId As String) As ServerResponse(Of Shipping) Implements IShippingService.GetShippingInfoById
         Dim shippingList As List(Of Shipping) = _shippingDao.GetShippingById(shippingId, userId)
         If shippingList.Count = 0 Then

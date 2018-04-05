@@ -6,7 +6,12 @@ Public Class CartServiceImpl : Implements ICartService
     Private _orderItemDao As IOrderItemDao = New OrderItemDaoImpl
     Private _productDao As IProductDao = New ProductDaoImpl
     Private _shippingDao As IShippingDao = New ShippingDaoImpl
-
+    ''' <summary>
+    ''' 创建订单
+    ''' </summary>
+    ''' <param name="shippingId"></param>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
     Public Function CreateOrder(shippingId As String, userId As String) As ServerResponse(Of Boolean) Implements ICartService.CreateOrder
         Dim checkedCartList As List(Of Cart) = _cartDao.SelectCheckedCartByUserId(userId)
         Dim resList As List(Of CartItem) = New List(Of CartItem)
@@ -29,17 +34,34 @@ Public Class CartServiceImpl : Implements ICartService
         End If
         Return ServerResponse(Of Boolean).createBySuccess(result)
     End Function
+    ''' <summary>
+    ''' 组装订单信息
+    ''' </summary>
+    ''' <param name="userId"></param>
+    ''' <param name="shippingId"></param>
+    ''' <param name="cartTotalPrice"></param>
+    ''' <returns></returns>
     Private Function AssembleOrder(userId As String, shippingId As String, cartTotalPrice As Decimal) As Order
         Dim order As Order = New Order
         order.OrderNo = Me.CreateOrder()
         order.UserId = Convert.ToInt32(userId)
         order.ShippingId = Convert.ToInt32(shippingId)
         order.Payment = cartTotalPrice
+        ' 默认在线支付: 1
         order.PaymentType = 1
+        ' 邮费默认0
         order.Postage = 0
+        ' 创建订单时,状态都是10未支付
         order.Status = 10
         Return order
     End Function
+    ''' <summary>
+    ''' 组装订单字表
+    ''' </summary>
+    ''' <param name="userId"></param>
+    ''' <param name="orderNo"></param>
+    ''' <param name="resList"></param>
+    ''' <returns></returns>
     Private Function AssembleOrderItems(userId As String, orderNo As Long, resList As List(Of CartItem)) As List(Of OrderItem)
         Dim orderItemList As List(Of OrderItem) = New List(Of OrderItem)
         For Each item In resList
@@ -56,7 +78,12 @@ Public Class CartServiceImpl : Implements ICartService
         Next
         Return orderItemList
     End Function
-
+    ''' <summary>
+    ''' 删除购物车
+    ''' </summary>
+    ''' <param name="cartIds"></param>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
     Public Function DeleteCartById(cartIds() As String, userId As String) As ServerResponse(Of Integer) Implements ICartService.DeleteCartById
         Dim result As Boolean = True
         For Each cartId In cartIds
@@ -68,7 +95,11 @@ Public Class CartServiceImpl : Implements ICartService
         Dim cartCount As Integer = _cartDao.SelectCartCount(userId)(0).Count
         Return ServerResponse(Of Integer).createBySuccess(cartCount)
     End Function
-
+    ''' <summary>
+    ''' 获取购物车所有信息
+    ''' </summary>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
     Public Function GetAllCartProducts(userId As String) As ServerResponse(Of CartInfo) Implements ICartService.GetAllCartProducts
         Dim cartList As List(Of Cart) = _cartDao.SelectCartByUserId(userId)
         If cartList.Count = 0 Then
@@ -91,7 +122,11 @@ Public Class CartServiceImpl : Implements ICartService
         info.CartList = resList
         Return ServerResponse(Of CartInfo).createBySuccess(info)
     End Function
-
+    ''' <summary>
+    ''' 获取所以选择的购物信息
+    ''' </summary>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
     Public Function GetAllCheckedCartInfoByUserId(userId As String) As ServerResponse(Of CartInfo) Implements ICartService.GetAllCheckedCartInfoByUserId
         Dim checkedCartList As List(Of Cart) = _cartDao.SelectCheckedCartByUserId(userId)
         Dim productList As List(Of Product) = New List(Of Product)
@@ -106,15 +141,22 @@ Public Class CartServiceImpl : Implements ICartService
         info.CartTotalPrice = Convert.ToString(cartTotalPrice)
         Return ServerResponse(Of CartInfo).createBySuccess(info)
     End Function
-
+    ''' <summary>
+    ''' 更新购物车信息
+    ''' </summary>
+    ''' <param name="carts"></param>
+    ''' <param name="user"></param>
+    ''' <returns></returns>
     Public Function UpdateCartInfo(carts As List(Of CartConfirmDto), user As User) As ServerResponse(Of Boolean) Implements ICartService.UpdateCartInfo
         If user Is Nothing Then
             Return ServerResponse(Of Boolean).createByErrorCodeMessage(ResponseCode.NEED_LOGIN.Code, "请重新登录")
         End If
         Dim res As Boolean
         For Each cart In carts
+            ' 选中的,更新成1
             If "1".Equals(cart.IsChecked) Then
                 res = _cartDao.UpdateCartInfoById(cart.CartId, cart.Quantity, Convert.ToString(user.Id))
+                ' 没选中的更新成0
             ElseIf "0".Equals(cart.IsChecked) Then
                 res = _cartDao.UpdateNotCheckedCartInfoById(cart.CartId, cart.Quantity, Convert.ToString(user.Id))
             End If
@@ -125,6 +167,12 @@ Public Class CartServiceImpl : Implements ICartService
         Next
         Return ServerResponse(Of Boolean).CreateBySuccessMessage("更新购物车成功")
     End Function
+    ''' <summary>
+    ''' 计算总价
+    ''' </summary>
+    ''' <param name="checkedCartList"></param>
+    ''' <param name="resList"></param>
+    ''' <param name="cartTotalPrice"></param>
     Private Sub ComputedTotalPrice(checkedCartList As List(Of Cart), ByRef resList As List(Of CartItem), ByRef cartTotalPrice As Decimal)
         For Each cart In checkedCartList
             Dim item As CartItem = New CartItem
@@ -139,6 +187,10 @@ Public Class CartServiceImpl : Implements ICartService
             resList.Add(item)
         Next
     End Sub
+    ''' <summary>
+    ''' 创建订单号
+    ''' </summary>
+    ''' <returns></returns>
     Private Function CreateOrder() As Long
         Dim dateStart As DateTime = New DateTime(1970, 1, 1, 8, 0, 0)
         Dim currentTime As Long = Convert.ToInt32((DateTime.Now - dateStart).TotalSeconds)

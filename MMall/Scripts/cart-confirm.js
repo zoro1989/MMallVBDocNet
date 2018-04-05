@@ -1,6 +1,8 @@
-﻿function addActiveStyle() {
+﻿// 添加地址激活样式
+function addActiveStyle() {
     $(this).addClass("active").siblings().removeClass("active")
 }
+// 删除地址
 function delAddress() {
     var addressNode = $(this).parent().parent()
     $.ajax({
@@ -16,6 +18,7 @@ function delAddress() {
         }
     });
 }
+// 编辑地址
 function editAddress() {
     var addressNode = $(this).parent().parent()
     $.ajax({
@@ -40,22 +43,27 @@ function editAddress() {
     });
 }
 $(function () {
+    // 绑定地址的点击事件
     $(".address-item").click(addActiveStyle)
-  
+    // 提交地址
     $(".order-submit").click(function () {
+        // 必须选择一个地址
         if ($(".address-item.active").length === 0) {
             alert("请选择收货地址")
             return;
         }
+        // 跳转订单确认页
         window.location.href = "/Cart/OrderCommit?shippingId=" + $(".address-item.active").data("id")
     })
+    // 添加地址
     $(".address-add").click(function () {
         $(".modal-wrap").fadeIn("slow")
     })
+    // 删除地址
     $(".address-delete").click(delAddress)
-
+    // 更新地址
     $(".address-update").click(editAddress)
-    
+    // 表单验证
     $(".form").validate({
         rules: {
             receiverName: {
@@ -84,16 +92,18 @@ $(function () {
             }
         }
     })
-
+    // 保存地址
     $(".address-btn").click(function () {
+        // 校验表单
         if ($(".form").valid()) {
             var shippingId = $("#shipping-id").val()
+            // 无地址id则为新增地址
             if (shippingId === undefined || shippingId === '') {
                 $.ajax({
                     url: "/Shipping/Add",
                     type: "post",
                     dataType: "json",
-                    data: $(".form").serialize(),
+                    data: $(".form").serialize(), // 序列化表单
                     success: function (res) {
                         var data = res.Data
                         var newShippingDom = `<div class="address-item" data-id="${data.Id}">
@@ -118,6 +128,7 @@ $(function () {
                         $(".form")[0].reset()
                     }
                 });
+                // 更新地址
             } else {
                 $.ajax({
                     url: "/Shipping/Add",
@@ -142,9 +153,10 @@ $(function () {
                         $newShippingDom.click(addActiveStyle)
                         $newShippingDom.find(".address-delete").click(delAddress)
                         $newShippingDom.find(".address-update").click(editAddress)
-
+                        // 更新地址信息
                         $(".address-item[data-id=" + data.Id + "]").before($newShippingDom).remove()
                         $(".modal-wrap").fadeOut("slow")
+                        // 重置表单
                         $(".form")[0].reset()
                     }
                 });
@@ -157,6 +169,7 @@ $(function () {
         // checkdata
         return true;
     })
+    // 关闭地址弹窗
     $(".fa-close.close").click(function () {
         $(".modal-wrap").fadeOut("slow")
     })

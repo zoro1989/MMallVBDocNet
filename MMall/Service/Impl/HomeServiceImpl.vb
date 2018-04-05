@@ -4,8 +4,14 @@
 Public Class HomeServiceImpl : Implements IHomeService
     Private _categoryDao As ICategoryDao = New CategoryDaoImpl
     Private _cartDao As ICartDao = New CartDaoImpl
+    ''' <summary>
+    ''' 组装首页数据
+    ''' </summary>
+    ''' <param name="user"></param>
+    ''' <returns></returns>
     Public Function SelectHomeData(user As User) As ServerResponse(Of HomeDataDto) Implements IHomeService.SelectHomeData
         Dim parentCategories As List(Of Category) = _categoryDao.SelectAllCategory()
+        ' 楼层数据
         Dim floorList As List(Of CategoryFloorDto) = New List(Of CategoryFloorDto)
         For Each pCategory In parentCategories
             Dim pModel As CategoryFloorDto = New CategoryFloorDto
@@ -13,8 +19,8 @@ Public Class HomeServiceImpl : Implements IHomeService
             pModel.CategoryList = _categoryDao.SelectCategoryItems(pCategory.Id)
             floorList.Add(pModel)
         Next
-
         Dim categoriesNoTire As List(Of Category) = _categoryDao.SelectCategoryNoTire()
+        ' 灰色商品类别数据
         Dim categories As List(Of List(Of Category)) = New List(Of List(Of Category))
 
         Dim modCount As Integer = categoriesNoTire.Count Mod 3
@@ -33,6 +39,8 @@ Public Class HomeServiceImpl : Implements IHomeService
         Dim model As HomeDataDto = New HomeDataDto
         model.FloorList = floorList
         model.CategoryList = categories
+
+        ' 获取购物车数量
         If user IsNot Nothing Then
             model.CartCount = _cartDao.SelectCartCount(Convert.ToString(user.Id))(0).Count
         End If

@@ -4,7 +4,11 @@ Namespace Controllers
     Public Class OrderController
         Inherits Controller
         Dim _orderService As IOrderService = New OrderServiceImpl
-        ' GET: Order
+        ''' <summary>
+        ''' 订单列表
+        ''' </summary>
+        ''' <param name="pageNo"></param>
+        ''' <returns></returns>
         Function List(Optional pageNo As Integer = 1) As ActionResult
             Dim user As User = DirectCast(Session(ConstVal.CURRENT_USER), User)
             If user Is Nothing Then
@@ -19,6 +23,11 @@ Namespace Controllers
             viewModel.Result = res
             Return View(viewModel)
         End Function
+        ''' <summary>
+        ''' 订单详情
+        ''' </summary>
+        ''' <param name="orderNumber"></param>
+        ''' <returns></returns>
         Function Detail(orderNumber As String) As ActionResult
             Dim user As User = DirectCast(Session(ConstVal.CURRENT_USER), User)
             If user Is Nothing Then

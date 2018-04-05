@@ -3,7 +3,11 @@ Imports System.Data.SqlClient
 Public Class OrderDaoImpl : Implements IOrderDao
 
     Private Const _baseColumnStr As String = "id,order_no,user_id,shipping_id,payment,payment_type,postage,status,payment_time,send_time,end_time,close_time,create_time,update_time"
-
+    ''' <summary>
+    ''' 创建订单
+    ''' </summary>
+    ''' <param name="order"></param>
+    ''' <returns></returns>
     Public Function CreateOrder(order As Order) As Boolean Implements IOrderDao.CreateOrder
         Dim helper As SQLHelper = New SQLHelper
         Dim sqlStr As String = "insert into cjbmall_order (order_no,user_id,shipping_id,payment,payment_type,postage,status,payment_time,create_time,update_time) values(@order_no, @user_id, @shipping_id, 
@@ -23,7 +27,12 @@ Public Class OrderDaoImpl : Implements IOrderDao
         Dim result As Boolean = helper.ExecAddDelUpdate(sqlStr, CommandType.Text, sqlParams)
         Return result
     End Function
-
+    ''' <summary>
+    ''' 获取订单详情
+    ''' </summary>
+    ''' <param name="orderNumber"></param>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
     Public Function SelectOrderDetailById(orderNumber As String, userId As String) As List(Of Order) Implements IOrderDao.SelectOrderDetailById
         Dim helper As SQLHelper = New SQLHelper
         Dim sqlStr As String = "select " & _baseColumnStr & " from  cjbmall_order where order_no=@orderNumber and user_id=@userId"
@@ -37,7 +46,7 @@ Public Class OrderDaoImpl : Implements IOrderDao
     ') as b  
     'where RowNumber BETWEEN 当前页数-1*条数 And 页数*条数
     ''' <summary>
-    ''' 
+    ''' 获取订单列表,带分页
     ''' </summary>
     ''' <param name="userId"></param>
     ''' <returns></returns>
@@ -50,7 +59,11 @@ Public Class OrderDaoImpl : Implements IOrderDao
         Dim dt As DataTable = helper.ExecSelect(sqlStr, CommandType.Text, params)
         Return ConvertHelper.convertToList(Of Order)(dt)
     End Function
-
+    ''' <summary>
+    ''' 获取订单数量
+    ''' </summary>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
     Private Function IOrderDao_SelectOrderListCount(userId As Integer) As List(Of Page) Implements IOrderDao.SelectOrderListCount
         Dim helper As SQLHelper = New SQLHelper
         Dim sqlStr As String = "select count(id) as count from cjbmall_order where user_id=@userId"
